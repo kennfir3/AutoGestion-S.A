@@ -43,6 +43,21 @@ Servicios disponibles:
 
 SQL Server usa la cuenta `sa` y la clave `YourStrong!Passw0rd`. Dentro de Docker, las APIs usan los nombres de servicio `sqlserver` y `redis`, nunca `localhost`.
 
+## Navegador y Swagger
+
+Todos los puertos se publican hacia la maquina host. Abra estas URLs desde el navegador:
+
+| Recurso | URL |
+| --- | --- |
+| Pagina de estado Gateway | http://localhost:5000/ |
+| Swagger Gateway | http://localhost:5000/swagger |
+| Swagger Productos | http://localhost:5001/swagger |
+| Swagger Libros | http://localhost:5002/swagger |
+| Swagger Vehiculos | http://localhost:5003/swagger |
+| Swagger Personas | http://localhost:5004/swagger |
+
+Las raices de las APIs individuales (`http://localhost:5001/` a `http://localhost:5004/`) redirigen a su Swagger. La pagina raiz del Gateway muestra las rutas publicas y el estado UP/DOWN de los servicios.
+
 Para detener los servicios:
 
 ```powershell
@@ -81,10 +96,18 @@ El Gateway traduce los prefijos externos a los controladores internos:
 Ejecutar 11 solicitudes en menos de un minuto al mismo endpoint:
 
 ```powershell
-1..11 | ForEach-Object { curl.exe -i http://localhost:5000/productos }
+1..11 | ForEach-Object { curl.exe -i http://localhost:5000/productos -H "ClientId: captura-rate-limit" }
 ```
 
 Ocelot aplica el limite global de 10 solicitudes por minuto y la solicitud excedente devuelve `429 Too Many Requests`.
+
+Rutas exactas a traves del Gateway:
+
+- Productos: `http://localhost:5000/productos`
+- Libros: `http://localhost:5000/libros`
+- Vehiculos: `http://localhost:5000/vehiculos`
+- Registro: `http://localhost:5000/auth/register`
+- Login: `http://localhost:5000/auth/login`
 
 ## Capturas de Identity y JWT
 
@@ -112,6 +135,8 @@ Con el token obtenido:
 ```powershell
 curl.exe -i http://localhost:5003/api/vehiculos -H "Authorization: Bearer PEGAR_TOKEN_AQUI"
 ```
+
+En Postman, seleccione la pestana **Authorization**, tipo **Bearer Token**, y pegue el valor `accessToken`. En Swagger de Vehiculos use el boton **Authorize** y escriba `Bearer TOKEN`.
 
 ## Personas
 

@@ -48,6 +48,13 @@
       "DownstreamPathTemplate": "/api/personas/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [ { "Host": "personas.api", "Port": 80 } ]
+    },
+    {
+      "UpstreamPathTemplate": "/auth/{everything}",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/api/auth/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "vehiculos.api", "Port": 80 } ]
     }
   ],
   "GlobalConfiguration": {

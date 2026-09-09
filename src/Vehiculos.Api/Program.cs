@@ -53,11 +53,13 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment()) { app.UseSwagger(); app.UseSwaggerUI(); }
+app.UseSwagger();
+app.UseSwaggerUI();
 await InitializeDatabaseAsync(app.Services, app.Logger);
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapGet("/", () => Results.Redirect("/swagger"));
 app.MapControllers();
 app.Run();
 
