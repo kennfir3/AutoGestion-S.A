@@ -1,0 +1,66 @@
+{
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/productos",
+      "UpstreamHttpMethod": [ "GET", "POST" ],
+      "DownstreamPathTemplate": "/api/productos",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "productos.api", "Port": 80 } ]
+    },
+    {
+      "UpstreamPathTemplate": "/productos/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "DownstreamPathTemplate": "/api/productos/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "productos.api", "Port": 80 } ]
+    },
+    {
+      "UpstreamPathTemplate": "/libros",
+      "UpstreamHttpMethod": [ "GET", "POST" ],
+      "DownstreamPathTemplate": "/api/libros",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "libros.api", "Port": 80 } ]
+    },
+    {
+      "UpstreamPathTemplate": "/libros/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "DownstreamPathTemplate": "/api/libros/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "libros.api", "Port": 80 } ]
+    },
+    {
+      "UpstreamPathTemplate": "/vehiculos",
+      "UpstreamHttpMethod": [ "GET", "POST" ],
+      "DownstreamPathTemplate": "/api/vehiculos",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "vehiculos.api", "Port": 80 } ]
+    },
+    {
+      "UpstreamPathTemplate": "/vehiculos/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "DownstreamPathTemplate": "/api/vehiculos/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "vehiculos.api", "Port": 80 } ]
+    },
+    {
+      "UpstreamPathTemplate": "/personas/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "DownstreamPathTemplate": "/api/personas/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "personas.api", "Port": 80 } ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://gateway.api",
+    "RateLimitOptions": {
+      "ClientWhitelist": [],
+      "EnableRateLimiting": true,
+      "Period": "1m",
+      "PeriodTimespan": 1,
+      "Limit": 10,
+      "HttpStatusCode": 429,
+      "DisableRateLimitHeaders": false,
+      "QuotaExceededMessage": "Rate limit exceeded. Maximum 10 requests per minute."
+    }
+  }
+}
