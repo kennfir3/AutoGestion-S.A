@@ -1,0 +1,75 @@
+name: autogestionsa
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "YourStrong!Passw0rd"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  productos.api:
+    build: ./src/Productos.Api
+    depends_on:
+      - sqlserver
+      - redis
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: Server=sqlserver;Database=ProductosDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True
+      Redis__ConnectionString: redis:6379
+    ports:
+      - "5001:80"
+
+  libros.api:
+    build: ./src/Libros.Api
+    depends_on:
+      - sqlserver
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: Server=sqlserver;Database=LibrosDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True
+    ports:
+      - "5002:80"
+
+  vehiculos.api:
+    build: ./src/Vehiculos.Api
+    depends_on:
+      - sqlserver
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: Server=sqlserver;Database=VehiculosDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True
+      Jwt__Issuer: AutoGestionSA
+      Jwt__Audience: AutoGestionSA.Clients
+      Jwt__Key: AutoGestionSA-Container-Key-Change-This-Before-Production-2026!
+    ports:
+      - "5003:80"
+
+  personas.api:
+    build: ./src/Personas.Api
+    depends_on:
+      - sqlserver
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: Server=sqlserver;Database=PersonasDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True
+    ports:
+      - "5004:80"
+
+  gateway.api:
+    build: ./src/Gateway.Api
+    depends_on:
+      - productos.api
+      - libros.api
+      - vehiculos.api
+      - personas.api
+    ports:
+      - "5000:80"
+
+volumes:
+  sqlserver-data:

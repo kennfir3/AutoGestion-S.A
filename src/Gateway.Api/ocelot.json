@@ -58,6 +58,7 @@
       "Period": "1m",
       "PeriodTimespan": 1,
       "Limit": 10,
+      "ClientIdHeader": "ClientId",
       "HttpStatusCode": 429,
       "DisableRateLimitHeaders": false,
       "QuotaExceededMessage": "Rate limit exceeded. Maximum 10 requests per minute."
